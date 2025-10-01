@@ -432,7 +432,7 @@ if (readMoreBtn && moreText) {
 // ====================
 // DYNAMIC IMAGE CHANGER
 // ====================
-const images = ["family/nwanyi01.jpg", "family/foundation5.jpg", "family/edited30.jpg", "family/edited09.jpg"];
+const images = ["nwanyi01.jpg", "foundation5.jpg", "edited30.jpg", "edited09.jpg"];
 const imageElement = document.getElementById("dynamicImage");
 
 function changeImage() {

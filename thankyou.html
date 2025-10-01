@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+   
+ <div class="thankyou-container">
+    <div class="thankyou-card">
+      <div class="icon-circle">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <h1>Thank You!</h1>
+      <p>Your payment was successful. Below are your transaction details:</p>
+      
+      <div id="verification-result" class="verification-box">
+        <p>Verifying your transaction...</p>
+      </div>
+
+      <a href="index.html" class="btn-home">← Back to Home</a>
+    </div>
+  </div>
+
+  <!-- Share section -->
+    <div class="share">
+      <h3>Spread the word</h3>
+      <div class="share-links">
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://yourwebsite.com" target="_blank" class="facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://twitter.com/intent/tweet?url=https://yourwebsite.com&text=I%20just%20donated%20to%20Healing%20Widows%20to%20support%20widows%20and%20children!%20Join%20me!" target="_blank" class="twitter"><i class="fab fa-twitter"></i></a>
+        <a href="https://wa.me/?text=I%20just%20donated%20to%20Healing%20Widows!%20You%20can%20support%20too:%20https://yourwebsite.com" target="_blank" class="whatsapp"><i class="fab fa-whatsapp"></i></a>
+      </div>
+  </section>
+  <style>
+    body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #f6f9fc, #eef1f5);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.thankyou-container {
+  max-width: 500px;
+  width: 100%;
+  padding: 1rem;
+}
+
+.thankyou-card {
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+  text-align: center;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.icon-circle {
+  background: #28a745;
+  color: #fff;
+  font-size: 2rem;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+}
+
+h1 {
+  color: #222;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  color: #555;
+  margin-bottom: 1.2rem;
+}
+
+.verification-box {
+  background: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 1rem 0;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.txn-details p {
+  margin: 0.5rem 0;
+}
+
+.success {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.error {
+  color: #d93025;
+  font-weight: 600;
+}
+
+.btn-home {
+  display: inline-block;
+  margin-top: 1.2rem;
+  padding: 0.8rem 1.6rem;
+  background: #f76b1c;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.btn-home:hover {
+  background: #e65c0e;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+  </style>
+
+  <script>
+  const params = new URLSearchParams(window.location.search);
+  const reference = params.get("reference");
+
+  if (reference) {
+    fetch(`verify.php?reference=${reference}`)
+      .then(res => res.json())
+      .then(data => {
+        const msgBox = document.getElementById("verification-result");
+        if (data.status) {
+          msgBox.innerHTML = `
+            <div class="txn-details">
+              <p><strong>Status:</strong> <span class="success">Successful</span></p>
+              <p><strong>Amount:</strong> ₦${(data.data.amount / 100).toLocaleString()}</p>
+              <p><strong>Reference:</strong> ${data.data.reference}</p>
+              <p><strong>Email:</strong> ${data.data.customer.email}</p>
+              <p><strong>Date:</strong> ${new Date(data.data.paid_at).toLocaleString()}</p>
+            </div>
+          `;
+        } else {
+          msgBox.innerHTML = `<p class="error">❌ ${data.message}</p>`;
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById("verification-result").innerHTML = `<p class="error">⚠ Something went wrong. Please contact support.</p>`;
+      });
+  }
+
+  
+  </script>
+</body>
+</html>

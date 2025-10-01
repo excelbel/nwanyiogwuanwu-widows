@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Healing Widows Initiative</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="navbar">
+    <!-- Logo -->
+    <h1 class="logo">Healing Widows</h1>
+
+    <!-- Hamburger (mobile) -->
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Navigation links -->
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="donate.html">Donate</a></li>
+      <li><a href="register.html">Register</a></li>
+      <li><a href="contact.html">Contact</a></li>
+       <li><a href="Volunteer.html">Volunteer</a></li>
+    </ul>
+
+    <!-- CTA placeholder (optional for extra buttons) -->
+    <div class="nav-cta"></div>
+  </nav>
+</header>
+
+<main>
+  <section class="contact">
+    <h2 class="section-title">Get in Touch</h2>
+    <div class="contact-grid">
+      
+      <!-- Contact Info -->
+      <div class="contact-info">
+        <h3>Contact Information</h3>
+        <p><i class="fas fa-map-marker-alt"></i>No 17 Bishop onyeabo Street Onitsha north Anambra state 
+</p>
+        <p><i class="fas fa-phone"></i> +1249152392901</p>
+        <p><i class="fas fa-envelope"></i> info@charity.org</p>
+        
+        <div class="contact-socials">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      
+      <!-- Contact Form -->
+      <div class="contact-form">
+        <h3>Send us a Message</h3>
+        <form id="contactForm" name="contact" method="POST" data-netlify="true">
+  <input type="hidden" name="form-name" value="contact">
+
+  <div class="form-group">
+    <input type="text" name="name" placeholder="Your Name" required>
+  </div>
+  <div class="form-group">
+    <input type="email" name="email" placeholder="Your Email" required>
+  </div>
+  <div class="form-group">
+    <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+  </div>
+  <button type="submit">Send Message</button>
+</form>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Map -->
+  <section class="map-section">
+    <h2 class="section-title">Our Location</h2>
+    <div class="map-wrapper">
+      <div style="position: relative; width: 100%; height: 0; padding-bottom: 56.25%;">
+ <div style="position: relative; width: 100%; height: 0; padding-bottom: 56.25%;">
+  <iframe
+    src="https://www.google.com/maps?q=No+17+Bishop+Onyeabo+Street+Onitsha+North+Anambra+State&output=embed"
+    style="border:0; position: absolute; top:0; left:0; width:100%; height:100%;"
+    allowfullscreen=""
+    loading="lazy">
+  </iframe>
+</div>
+
+</div>
+
+    </div>
+  </section>
+</main>
+
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-about">
+      <h3>Healing Widows Initiative</h3>
+      <p>We empower widows and children through education, support, and community care. Together we create lasting impact.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <ul>
+      <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="volunteer.html">Volunteer</a></li>
+        <li><a href="donate.html">Donate</a></li>
+      </ul>
+    </div>
+    <div class="footer-socials">
+      <h4>Connect</h4>
+      <div class="social-icons">
+       <a href="#"><img src="images/facebook.svg" alt="Facebook"></a><br>
+        <a href="#"><img src="images/twitter.svg" alt="Twitter"></a><br>
+        <a href="#"><img src="images/instagram.svg" alt="Instagram"></a><br>
+        <a href="www.linkedin.com/in/nwanyiogwuanwuwidowsfoundation"><img src="images/linkedin.svg" alt="linkedin"></a><br>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Healing Widows Initiative. All Rights Reserved.</p>
+  </div>
+</footer>
+<!-- UNIVERSAL MODAL -->
+<div id="userModal" class="modal">
+  <div class="modal-content">
+    <span id="closeUserModal" class="close">&times;</span>
+    <p id="userModalMessage"></p>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

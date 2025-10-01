@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donate - Healing Widows Initiative</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="navbar">
+    <!-- Logo -->
+    <h1 class="logo">Healing Widows</h1>
+
+    <!-- Hamburger (mobile) -->
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Navigation links -->
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="donate.html">Donate</a></li>
+      <li><a href="register.html">Register</a></li>
+      <li><a href="contact.html">Contact</a></li>
+       <li><a href="Volunteer.html">Volunteer</a></li>
+    </ul>
+
+    <!-- CTA placeholder (optional for extra buttons) -->
+    <div class="nav-cta"></div>
+  </nav>
+</header>
+
+<section class="donate-hero" style="background-image: url('path/to/your-hero-image.jpg');">
+  <div class="donate-overlay">
+    <h1>Support Our Cause 💖</h1>
+    <p class="donate-subtitle">Together we can make a difference</p>
+  </div>
+</section>
+
+<div class="donate-wrapper">
+  <!-- Left Side: Progress + Donors -->
+  <div class="donate-info">
+    <div class="donate-progress-card">
+      <h2>Campaign Progress</h2>
+      <div class="donate-progress-container">
+        <div class="donate-progress-bar" id="progress-bar"></div>
+      </div>
+      <p id="progress-text" class="donate-progress-text">₦0.00 raised of ₦1000.00</p>
+    </div>
+
+    <div class="donate-donors-card">
+      <h2>Recent Donors</h2>
+      <ul id="donors-list"></ul>
+    </div>
+  </div>
+
+  <!-- Right Side: Donation Form -->
+  <div class="donate-form-card">
+    <h2>Make a Donation</h2>
+    <form id="donate-form" class="donate-form">
+      <input type="email" id="email" placeholder="Your Email" required>
+      <input type="number" id="amount" placeholder="Amount (₦)" required>
+      <button type="submit">Donate Now</button>
+    </form>
+  </div>
+</div>
+
+<!-- Thank You Modal -->
+<div id="thankYouModal" class="donate-modal">
+  <div class="donate-modal-box">
+    <span id="closeModal" class="donate-modal-close">&times;</span>
+    <p id="thankYouMessage">Thank you for your donation!</p>
+  </div>
+</div>
+
+<!-- Get Involved -->
+<section class="involved">
+  <h2>Get Involved</h2>
+  <p>
+    Join us in creating lasting impact. Your time, resources, and skills can help transform lives 
+    and communities for the better.
+  </p>
+  <a href="donate.html" class="btn-gold">Support Us</a>
+</section>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <!-- About -->
+    <div class="footer-about">
+      <h3>Healing Widows Initiative</h3>
+      <p>We empower widows and children through education, support, and community care. Together we create lasting impact.</p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="donate.html">Donate</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Socials -->
+    <div class="footer-socials">
+      <h4>Connect</h4>
+      <div class="social-icons">
+        <a href="#" target="_blank"><img src="fb.png" alt="Facebook" width="48"></a><br>
+            <a href="#" target="_blank"><img src="twit.png" alt="Twitter" width="48"></a><br>
+            <a href="#" target="_blank"><img src="insta.jpg" alt="Instagram" width="40"></a><br>
+            <a href="#" target="_blank"><img src="tk.png" alt="Tiktok" width="48"></a> <br>
+        <a href="www.linkedin.com/in/nwanyiogwuanwuwidowsfoundation"><img src="images/linkedin.svg" alt="linkedin"></a><br>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 Healing Widows Initiative. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<!-- UNIVERSAL MODAL -->
+<div id="userModal" class="modal">
+  <div class="modal-content">
+    <span id="closeUserModal" class="close">&times;</span>
+    <p id="userModalMessage"></p>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

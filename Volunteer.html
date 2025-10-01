@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Volunteer - Healing Widows Initiative</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="navbar">
+    <!-- Logo -->
+    <h1 class="logo">Healing Widows</h1>
+
+    <!-- Hamburger (mobile) -->
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Navigation links -->
+    <ul class="nav-links" id="navLinks">
+     <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="donate.html">Donate</a></li>
+      <li><a href="register.html">Register</a></li>
+      <li><a href="contact.html">Contact</a></li>
+       <li><a href="Volunteer.html">Volunteer</a></li>
+    </ul>
+
+    <!-- CTA placeholder (optional for extra buttons) -->
+    <div class="nav-cta"></div>
+  </nav>
+</header>
+<main>
+<section class="volunteer">
+  <!-- Why Volunteer With Us -->
+  <div class="section-intro">
+    <h2 class="section-title">Why Volunteer With Us</h2>
+  </div>
+  <div class="why-volunteer grid-3">
+    <div class="vol-card">
+      <div class="icon"><i class="fas fa-hand-holding-heart"></i></div>
+      <h3>Give Back</h3>
+      <p>Be part of something meaningful. Support widows and communities by sharing your time and love.</p>
+    </div>
+    <div class="vol-card">
+      <div class="icon"><i class="fas fa-lightbulb"></i></div>
+      <h3>Grow Skills</h3>
+      <p>Enhance your leadership, communication, and teamwork skills while creating positive change.</p>
+    </div>
+    <div class="vol-card">
+      <div class="icon"><i class="fas fa-globe"></i></div>
+      <h3>Global Impact</h3>
+      <p>Connect with a global mission that is transforming lives, one step at a time.</p>
+    </div>
+  </div>
+
+  <!-- Volunteer Opportunities -->
+  <div class="section-intro">
+    <h2 class="section-title">Volunteer Opportunities</h2>
+  </div>
+  <div class="opportunity-grid">
+    <div class="opportunity-card">
+      <h3>Community Outreach</h3>
+      <p>Join us in our outreach programs that support widows with resources and mentorship.</p>
+    </div>
+    <div class="opportunity-card">
+      <h3>Event Support</h3>
+      <p>Help organize fundraising events, awareness campaigns, and community gatherings.</p>
+    </div>
+    <div class="opportunity-card">
+      <h3>Skill Training</h3>
+      <p>Share your expertise to empower widows with new professional and personal skills.</p>
+    </div>
+  </div>
+
+  <!-- Volunteer Form -->
+  <div class="section-intro">
+    <h2 class="section-title">Become a Volunteer</h2>
+  </div>
+  <div class="volunteer-form">
+    <form id="volunteerForm" name="volunteer" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="volunteer">
+      <p style="display:none">
+        <label>Don’t fill this out if you’re human: <input name="bot-field"></label>
+      </p>
+
+      <div class="form-group">
+        <input id="vname" type="text" name="name" placeholder="Full Name" required>
+      </div>
+      <div class="form-group">
+        <input id="vemail" type="email" name="email" placeholder="Email Address" required>
+      </div>
+      <div class="form-group">
+        <input type="text" name="phone" placeholder="Phone Number">
+      </div>
+      <div class="form-group">
+        <select name="opportunity" required>
+          <option value="">Select Opportunity</option>
+          <option>Community Outreach</option>
+          <option>Event Support</option>
+          <option>Skill Training</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <textarea name="reason" rows="5" placeholder="Why do you want to volunteer?"></textarea>
+      </div>
+      <button type="submit">Submit Application</button>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <!-- About -->
+    <div class="footer-about">
+      <h3>Healing Widows Initiative</h3>
+      <p>We empower widows and children through education, support, and community care. Together we create lasting impact.</p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="donate.html">Donate</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Socials -->
+    <div class="footer-socials">
+      <h4>Connect</h4>
+      <a href="#"><img src="images/facebook.svg" alt="Facebook"></a><br>
+        <a href="#"><img src="images/twitter.svg" alt="Twitter"></a><br>
+        <a href="#"><img src="images/instagram.svg" alt="Instagram"></a><br>
+        <a href="www.linkedin.com/in/nwanyiogwuanwuwidowsfoundation"><img src="images/linkedin.svg" alt="linkedin"></a><br>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 Healing Widows Initiative. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<!-- UNIVERSAL MODAL -->
+<div id="userModal" class="modal">
+  <div class="modal-content">
+    <span id="closeUserModal" class="close">&times;</span>
+    <p id="userModalMessage"></p>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

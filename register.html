@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register a Widow - Healing Widows Initiative</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="navbar">
+    <!-- Logo -->
+    <h1 class="logo">Healing Widows</h1>
+
+    <!-- Hamburger (mobile) -->
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Navigation links -->
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="donate.html">Donate</a></li>
+      <li><a href="register.html">Register</a></li>
+      <li><a href="contact.html">Contact</a></li>
+       <li><a href="Volunteer.html">Volunteer</a></li>
+    </ul>
+
+    <!-- CTA placeholder (optional for extra buttons) -->
+    <div class="nav-cta"></div>
+  </nav>
+</header>
+
+<main>
+  <section class="register section container">
+    <h2>Register a Widow</h2>
+    <div class="form-card">
+      <form id="registerForm" name="register" method="POST" data-netlify="true">
+  <input type="hidden" name="form-name" value="register">
+
+  <div class="form-group">
+    <label for="rname">Widow’s Full Name</label>
+    <input type="text" id="rname" name="name" placeholder="Enter full name" required>
+  </div>
+
+  <div class="form-group">
+    <label for="rage">Age</label>
+    <input type="number" id="rage" name="age" placeholder="Enter age" required>
+  </div>
+
+  <div class="form-group">
+    <label for="rphone">Phone Number</label>
+    <input type="tel" id="rphone" name="phone" placeholder="Enter phone number" required>
+  </div>
+
+  <div class="form-group">
+    <label for="rneeds">Needs or Support Required</label>
+    <textarea id="rneeds" name="needs" rows="4" placeholder="Describe their situation and needs" required></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit Registration</button>
+</form>
+</div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    
+    <!-- About -->
+    <div class="footer-about">
+      <h3>Healing Widows Initiative</h3>
+      <p>We empower widows and children through education, support, and community care. Together we create lasting impact.</p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="donate.html">Donate</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Socials -->
+    <div class="footer-socials">
+      <h4>Connect</h4>
+      <div class="social-icons">
+        <a href="#"><img src="images/facebook.svg" alt="Facebook"></a><br>
+        <a href="#"><img src="images/twitter.svg" alt="Twitter"></a><br>
+        <a href="#"><img src="images/instagram.svg" alt="Instagram"></a><br>
+        <a href="www.linkedin.com/in/nwanyiogwuanwuwidowsfoundation"><img src="images/linkedin.svg" alt="linkedin"></a><br>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 Healing Widows Initiative. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<!-- UNIVERSAL MODAL -->
+<div id="userModal" class="modal">
+  <div class="modal-content">
+    <span id="closeUserModal" class="close">&times;</span>
+    <p id="userModalMessage"></p>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

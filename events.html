@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events - Grace & Ground Initiative</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="navbar">
+    <!-- Logo -->
+    <h1 class="logo">Healing Widows</h1>
+
+    <!-- Hamburger (mobile) -->
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Navigation links -->
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="donate.html">Donate</a></li>
+      <li><a href="register.html">Register</a></li>
+      <li><a href="contact.html">Contact</a></li>
+       <li><a href="Volunteer.html">Volunteer</a></li>
+    </ul>
+
+    <!-- CTA placeholder (optional for extra buttons) -->
+    <div class="nav-cta"></div>
+  </nav>
+</header>
+
+<main>
+  <!-- Upcoming Events -->
+  <section class="events section container">
+    <h2>Upcoming Events</h2>
+    <p class="section-intro">Be part of our journey of impact. Click on an event to learn more or register directly.</p>
+
+    <div class="events-grid">
+      <div class="event-card" data-event="empowerment">
+        <div class="event-date">
+          <span class="day">15</span>
+          <span class="month">Oct</span>
+        </div>
+        <div class="event-content">
+          <h3>Widows Empowerment Workshop</h3>
+          <p>An interactive workshop focused on financial independence and mental wellness for widows.</p>
+          <a href="#" class="btn btn-secondary register-btn" data-event="Widows Empowerment Workshop">Register</a>
+        </div>
+      </div>
+
+      <div class="event-card" data-event="health">
+        <div class="event-date">
+          <span class="day">08</span>
+          <span class="month">Nov</span>
+        </div>
+        <div class="event-content">
+          <h3>Community Health Drive</h3>
+          <p>Providing free health screenings, counseling, and wellness tips for widows and their families.</p>
+          <a href="#" class="btn btn-secondary register-btn" data-event="Community Health Drive">Register</a>
+        </div>
+      </div>
+
+      <div class="event-card" data-event="gala">
+        <div class="event-date">
+          <span class="day">22</span>
+          <span class="month">Dec</span>
+        </div>
+        <div class="event-content">
+          <h3>Fundraising Gala Night</h3>
+          <p>A night of music, dinner, and fundraising to support widows and children in need.</p>
+          <a href="#" class="btn btn-secondary register-btn" data-event="Fundraising Gala Night">Get Tickets</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Past Events -->
+  <section class="past-events section container">
+    <h2>Past Events & Activities</h2>
+    <p class="section-intro">A glimpse into the impactful programs we’ve organized in the past years.</p>
+
+    <div class="past-grid">
+      <div class="past-card">
+        <img src="family/edited09.jpg" alt="Past Event 1">
+        <div class="past-info">
+          <h3>Widows Support Outreach 2024</h3>
+          <p>Distributed food, clothing, and financial assistance to over 200 widows in the community.</p>
+        </div>
+      </div>
+
+      <div class="past-card">
+        <img src="family/edited2.jpg" alt="Past Event 2">
+        <div class="past-info">
+          <h3>Fundraising Events</h3>
+          <p>We organize fundraising events to provide widows and their children with financial support, educational resources, and essential healthcare.</p>
+        </div>
+      </div>
+
+      <div class="past-card">
+        <img src="https://picsum.photos/400/250?3" alt="Past Event 3">
+        <div class="past-info">
+          <h3>Health & Wellness Fair</h3>
+          <p>Partnered with local hospitals to provide health screenings and counseling to widows.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Registration Modal -->
+<div id="eventModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <h3 id="modalTitle">Register for Event</h3>
+    <form id="eventForm">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <input type="hidden" name="eventName" id="eventName">
+      <button type="submit" class="btn btn-primary">Submit Registration</button>
+    </form>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-about">
+      <h3>Grace & Ground Initiative</h3>
+      <small class="registered-name">Nwanyi Ogwuanwu Widows Foundation</small>
+      <p>We empower widows and children through education, support, and community care. Together we create lasting impact.</p>
+    </div>
+
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="donate.html">Donate</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-socials">
+      <h4>Connect</h4>
+      <div class="social-icons">
+        <a href="#"><img src="images/facebook.svg" alt="Facebook"></a><br>
+        <a href="#"><img src="images/twitter.svg" alt="Twitter"></a><br>
+        <a href="#"><img src="images/instagram.svg" alt="Instagram"></a><br>
+        <a href="www.linkedin.com/in/nwanyiogwuanwuwidowsfoundation"><img src="images/linkedin.svg" alt="linkedin"></a><br>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 Grace & Ground Initiative | Nwanyi Ogwuanwu Widows Foundation. All Rights Reserved.</p>
+  </div>
+</footer>
+<!-- UNIVERSAL MODAL -->
+<div id="userModal" class="modal">
+  <div class="modal-content">
+    <span id="closeUserModal" class="close">&times;</span>
+    <p id="userModalMessage"></p>
+  </div>
+</div>
+
+<script src="script.js">
+  
+</script>
+
+</body>
+</html>

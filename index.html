@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Healing Widows</title>
+
+  <!-- AOS (Animate on Scroll) CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar container">
+      <div class="logo">
+        <h1>Grace & Ground Initiative</h1>
+        <h5 class="registered-name">Nwanyi Ogwuanwu Widows Foundation</h5>
+      </div>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="donate.html" class="donate-link">Donate</a></li>
+        <li class="dropdown">
+          <a href="#">More ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="volunteer.html">Volunteer</a></li>
+            <li><a href="register.html">Register</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </li>
+        <li>
+          <div class="nav-cta">
+            <button id="toggle" aria-label="Toggle Dark Mode">🌙</button>
+          </div> 
+        </li>
+      </ul>
+
+      <div class="nav-cta">
+        <a href="donate.html" class="btn btn-primary">Donate</a>
+        <a href="volunteer.html" class="btn btn-outline">Volunteer</a>
+      </div>
+
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero container" data-aos="fade-up">
+      <div class="hero-content">
+        <h1>Shining a Light of Hope</h1>
+        <p>Empowering widows and children through education, relief, and community care. Together we can restore dignity and create lasting impact.</p>
+        <div class="hero-buttons">
+          <button class="btn btn-primary donate-btn">Donate Now</button>
+          <button class="btn btn-outline volunteer-btn">Become a Volunteer</button>
+          <button class="btn btn-outline register-btn">Register a Widow</button>
+        </div>
+      </div>
+      <div class="hero-image" data-aos="fade-left">
+        <img id="dynamicImage" src="family/nwanyi01.jpg" alt="rotating Image">
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section container" data-aos="fade-right">
+      <h2>About Grace and Ground Initiative</h2>
+      <p>Grace and Ground initiative, also known as Nwanyiogwuanwu Widows Foundation, is dedicated to helping widows access empowerment programs...</p>
+    </section>
+
+    <!-- Impact Section -->
+    <section id="impact" class="section impact" data-aos="fade-up">
+      <h2 class="section-title">Our Impact</h2>
+      <div class="impact-grid container">
+        <div class="impact-card" data-aos="zoom-in" data-aos-delay="100">
+          <div class="impact-icon">👩‍👧</div>
+          <div class="counter" data-target="500">0</div>
+          <p>Widows Supported</p>
+        </div>
+        <div class="impact-card" data-aos="zoom-in" data-aos-delay="200">
+          <div class="impact-icon">🍲</div>
+          <div class="counter" data-target="1200">0</div>
+          <p>Meals Provided</p>
+        </div>
+        <div class="impact-card" data-aos="zoom-in" data-aos-delay="300">
+          <div class="impact-icon">🤝</div>
+          <div class="counter" data-target="200">0</div>
+          <p>Volunteers</p>
+        </div>
+      </div>
+    </section>
+
+   <!-- ==================== DONATION (Node.js + Paystack) ==================== -->
+<!-- Donation Section -->
+<section id="donate" class="section donate">
+  <h2>Make a Difference</h2>
+  <div class="donation-card">
+    <form id="donate-form">
+      <input 
+        type="email" 
+        id="email" 
+        name="email" 
+        placeholder="Your Email" 
+        required 
+      />
+      <input 
+        type="number" 
+        id="amount" 
+        name="amount" 
+        placeholder="Enter Amount (₦)" 
+        required 
+      />
+      <button type="submit" class="pbtn">Donate</button>
+    </form>
+  </div>
+</section>
+
+<!-- Thank You Modal -->
+<div id="thankYouModal" class="donate-modal">
+  <div class="donate-modal-box">
+    <span id="closeModal" class="donate-modal-close">&times;</span>
+    <p id="thankYouMessage">Thank you for your donation!</p>
+  </div>
+</div>
+
+<!-- ==================== REGISTER (Netlify) ==================== -->
+<section id="register">
+  <h2>Register a Widow</h2>
+  <form id="registerForm" name="register" method="POST" data-netlify="true">
+    <input type="hidden" name="form-name" value="register">
+
+    <div class="form-group">
+      <label for="rname">Widow’s Full Name</label>
+      <input type="text" id="rname" name="name" placeholder="Enter full name" required>
+    </div>
+
+    <div class="form-group">
+      <label for="rage">Age</label>
+      <input type="number" id="rage" name="age" placeholder="Enter age" required>
+    </div>
+
+    <div class="form-group">
+      <label for="rphone">Phone Number</label>
+      <input type="tel" id="rphone" name="phone" placeholder="Enter phone number" required>
+    </div>
+
+    <div class="form-group">
+      <label for="rneeds">Needs or Support Required</label>
+      <textarea id="rneeds" name="needs" rows="4" placeholder="Describe their situation and needs" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Registration</button>
+  </form>
+</section>
+
+<!-- ==================== VOLUNTEER (Netlify) ==================== -->
+<section id="volunteer">
+  <h2>Volunteer With Us</h2>
+  <form id="volunteerForm" name="volunteer" method="POST" data-netlify="true">
+    <input type="hidden" name="form-name" value="volunteer">
+
+    <div class="form-group">
+      <label for="vname">Full Name</label>
+      <input type="text" id="vname" name="name" placeholder="Enter your name" required>
+    </div>
+
+    <div class="form-group">
+      <label for="vemail">Email</label>
+      <input type="email" id="vemail" name="email" placeholder="Enter your email" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Application</button>
+  </form>
+</section>
+
+<!-- ==================== CONTACT (Netlify) ==================== -->
+<section id="contact">
+  <h2>Contact Us</h2>
+  <form id="contactForm" name="contact" method="POST" data-netlify="true">
+    <input type="hidden" name="form-name" value="contact">
+
+    <div class="form-group">
+      <label for="cname">Full Name</label>
+      <input type="text" id="cname" name="name" placeholder="Enter your name" required>
+    </div>
+
+    <div class="form-group">
+      <label for="cemail">Email</label>
+      <input type="email" id="cemail" name="email" placeholder="Enter your email" required>
+    </div>
+
+    <div class="form-group">
+      <label for="cmessage">Message</label>
+      <textarea id="cmessage" name="message" rows="4" placeholder="Enter your message" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Send Message</button>
+  </form>
+</section>
+
+
+
+  <footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-about">
+      <h3>Healing Widows Initiative</h3>
+      <p>We empower widows and children through education, support, and community care. Together we create lasting impact.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="volunteer.html">Volunteer</a></li>
+        <li><a href="donate.html">Donate</a></li>
+      </ul>
+    </div>
+    <div class="footer-socials">
+      <h4>Connect</h4>
+      <div class="social-icons">
+        <a href="#"><img src="images/facebook.svg" alt="Facebook"></a><br>
+        <a href="#"><img src="images/twitter.svg" alt="Twitter"></a><br>
+        <a href="#"><img src="images/instagram.svg" alt="Instagram"></a><br>
+        <a href="www.linkedin.com/in/nwanyiogwuanwuwidowsfoundation"><img src="images/linkedin.svg" alt="linkedin"></a><br>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Healing Widows Initiative. All Rights Reserved.</p>
+  </div>
+</footer>
+
+  <!-- Modal HTML -->
+  <div id="userModal" class="modal">
+    <div class="modal-content">
+      <span id="closeUserModal" class="close">&times;</span>
+      <p id="userModalMessage"></p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+
+  <script>
+    AOS.init({ duration: 1200, once: true });
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>

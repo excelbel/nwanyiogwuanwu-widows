@@ -133,7 +133,7 @@
 <!-- ==================== REGISTER (Netlify) ==================== -->
 <section id="register">
   <h2>Register a Widow</h2>
-  <form id="registerForm" name="register" method="POST" data-netlify="true">
+  <form id="registerForm" name="register" method="POST" data-netlify="true" action="/thank-you.html">
     <input type="hidden" name="form-name" value="register">
 
     <div class="form-group">
@@ -160,30 +160,11 @@
   </form>
 </section>
 
-<!-- ==================== VOLUNTEER (Netlify) ==================== -->
-<section id="volunteer">
-  <h2>Volunteer With Us</h2>
-  <form id="volunteerForm" name="volunteer" method="POST" data-netlify="true">
-    <input type="hidden" name="form-name" value="volunteer">
-
-    <div class="form-group">
-      <label for="vname">Full Name</label>
-      <input type="text" id="vname" name="name" placeholder="Enter your name" required>
-    </div>
-
-    <div class="form-group">
-      <label for="vemail">Email</label>
-      <input type="email" id="vemail" name="email" placeholder="Enter your email" required>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit Application</button>
-  </form>
-</section>
 
 <!-- ==================== CONTACT (Netlify) ==================== -->
 <section id="contact">
   <h2>Contact Us</h2>
-  <form id="contactForm" name="contact" method="POST" data-netlify="true">
+  <form id="contactForm" name="contact" method="POST" data-netlify="true" action="/thank-you.html">
     <input type="hidden" name="form-name" value="contact">
 
     <div class="form-group">
@@ -204,7 +185,6 @@
     <button type="submit" class="btn btn-primary">Send Message</button>
   </form>
 </section>
-
 
 
   <footer class="footer">

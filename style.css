@@ -83,10 +83,14 @@ small{font-size:.9rem;color:var(--muted)}
 .hero-image img{border-radius:var(--radius-lg);box-shadow:var(--shadow-soft);transition:transform .45s ease}
 .hero-image img:hover{transform:scale(1.02)}
 .hero-buttons{display:flex;gap:1rem;flex-wrap:wrap}
-.btn{display:inline-block;padding:.85rem 1.4rem;border-radius:999px;font-weight:700;cursor:pointer;border:0;transition:transform .22s ease,box-shadow .22s ease}
-.btn-primary{background:linear-gradient(135deg,var(--primary),#006a6a);color:#fff;box-shadow:0 8px 24px rgba(0,128,128,0.12)}
+.btn{ text-decoration: none; /* remove underline on <a> */display:inline-block;padding:.85rem 1.4rem;border-radius:999px;font-weight:700;cursor:pointer;border:0;transition:transform .22s ease,box-shadow .22s ease }
+
+
+
+.btn-primary{ 
+  background:linear-gradient(135deg,var(--primary),#006a6a);color:#fff;box-shadow:0 8px 24px rgba(0,128,128,0.12)}
 .btn-primary:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover)}
-.btn-outline{background:transparent;border:2px solid var(--primary);color:var(--primary)}
+.btn-outline{  background:transparent;border:2px solid var(--primary);color:var(--primary)}
 .btn-outline:hover{background:var(--primary);color:#fff;transform:translateY(-3px)}
 
 /* -----------------------

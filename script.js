@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ---- PAYSTACK ----
   function payWithPaystack(email, amount) {
     let handler = PaystackPop.setup({
-      key: 'pk_test_xxxxxxxxxxxxxxxxxxxxxxxxx', // replace with your Paystack public key
+      key: 'pk_live_21f95e6aa3c7c285a0e9db68656bb9294bb81f51', // replace with your Paystack public key
       email: email,
       amount: amount,
       currency: "NGN",

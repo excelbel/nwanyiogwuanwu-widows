@@ -22,17 +22,27 @@ app.use(
 // ====================
 // Fake in-memory database, amounts in naira
 let donors = [
-  { email: "john@example.com", amount: 50.00 }, // ₦50.00
-  { email: "mary@example.com", amount: 100.00 } // ₦100.00
+  { email: "john@example.com", amount: 50.0 }, // ₦50.00
+  { email: "mary@example.com", amount: 100.0 } // ₦100.00
 ];
 let raised = donors.reduce((sum, d) => sum + d.amount, 0);
 
 // helper to normalize to 2 decimal places
 function toNaira(value) {
-  // ensure a number, round to 2 decimals
   const n = Number(value);
   if (Number.isNaN(n)) return NaN;
   return Number(n.toFixed(2));
+}
+
+// simple helper to ensure PAYSTACK_SECRET exists
+function requirePaystackSecret(res) {
+  const secret = process.env.PAYSTACK_SECRET;
+  if (!secret) {
+    console.error("PAYSTACK_SECRET is not set in environment variables.");
+    if (res) res.status(500).json({ status: "error", message: "Server misconfigured: missing PAYSTACK_SECRET" });
+    return null;
+  }
+  return secret;
 }
 
 // ====================
@@ -71,16 +81,20 @@ app.post("/verify-payment", async (req, res) => {
       return res.status(400).json({ status: "error", message: "Invalid amount format" });
     }
 
+    const secret = requirePaystackSecret(res);
+    if (!secret) return; // response already sent
+
     const url = `https://api.paystack.co/transaction/verify/${encodeURIComponent(reference)}`;
     const response = await axios.get(url, {
       headers: {
-        Authorization: `Bearer ${process.env.PAYSTACK_SECRET}`
+        Authorization: `Bearer ${secret}`
       }
     });
 
     const data = response.data;
-    if (!data || !data.status || !data.data) {
-      return res.status(400).json({ status: "failed", message: "Paystack returned an unexpected response" });
+    // Paystack returns data.status (boolean) and data.data.status (string like 'success')
+    if (!data || !data.status || !data.data || data.data.status !== "success") {
+      return res.status(400).json({ status: "failed", message: "Paystack returned unsuccessful transaction or unexpected response" });
     }
 
     // Paystack amount is in kobo, convert to naira
@@ -107,8 +121,8 @@ app.post("/verify-payment", async (req, res) => {
       return res.json({ status: "failed", message: "Verification failed, amount mismatch" });
     }
   } catch (err) {
-    console.error("verify-payment error", err.message);
-    return res.status(500).json({ status: "error", message: err.message });
+    console.error("verify-payment error", err && err.message ? err.message : err);
+    return res.status(500).json({ status: "error", message: err.message || "Server error" });
   }
 });
 
@@ -123,9 +137,17 @@ app.post("/paystack-webhook", (req, res) => {
     }
 
     const secret = process.env.PAYSTACK_SECRET || "";
+    if (!secret) {
+      console.error("PAYSTACK_SECRET not set, rejecting webhook");
+      return res.status(500).send("Server misconfigured");
+    }
+
     const hash = crypto.createHmac("sha512", secret).update(req.rawBody).digest("hex");
 
-    if (hash !== signature) {
+    // use timingSafeEqual for safer comparison
+    const hashBuf = Buffer.from(hash, "utf8");
+    const sigBuf = Buffer.from(signature, "utf8");
+    if (hashBuf.length !== sigBuf.length || !crypto.timingSafeEqual(hashBuf, sigBuf)) {
       return res.status(400).send("Invalid signature");
     }
 
@@ -156,9 +178,13 @@ app.post("/paystack-webhook", (req, res) => {
   }
 });
 
+app.get("/", (req, res) => {
+  res.send("🚀 Your Paystack donation API is live!");
+});
+
 // ====================
 // START SERVER
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });

@@ -57,15 +57,53 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // ====================
-// DATABASE (MongoDB)
 // ====================
-mongoose
-  .connect(process.env.MONGO_URI || "mongodb://localhost:27017/donations", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("✅ Connected to MongoDB"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err.message));
+// DATABASE + SESSIONS (updated)
+// ====================
+async function startApp() {
+  try {
+    // connect to MongoDB. no useNewUrlParser or useUnifiedTopology needed with driver >=4
+    await mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/donations", {
+      // optional: set a reasonable server selection timeout if you want
+      // serverSelectionTimeoutMS: 5000,
+    });
+    console.log("✅ Connected to MongoDB");
+
+    // Reuse mongoose's underlying MongoClient for session store
+    const mongoClient = mongoose.connection.getClient();
+
+    app.use(
+      session({
+        secret: process.env.SESSION_SECRET || "change_this_in_prod",
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+          secure: process.env.NODE_ENV === "production",
+          httpOnly: true,
+          sameSite: "strict",
+          maxAge: 1000 * 60 * 60,
+        },
+        store: MongoStore.create({
+          client: mongoClient,
+          collectionName: "sessions",
+        }),
+      })
+    );
+
+    // start server only after DB and session store set up
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log(`✅ Server running on http://localhost:${PORT}`);
+    });
+  } catch (err) {
+    console.error("❌ MongoDB connection error:", err);
+    process.exit(1); // fail fast so the platform can restart or alert you
+  }
+}
+
+// call the async starter
+startApp();
+
 
 // Donation model
 const donationSchema = new mongoose.Schema({

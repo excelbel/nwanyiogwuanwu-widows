@@ -75,11 +75,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const thankYouMessage = document.getElementById("thankYouMessage");
 
   const goal = 100000; // ₦1000 in kobo
+  const baseURL = "https://nwanyiogwuanwu-widows.onrender.com";
 
   // ---- LOAD PROGRESS ----
   function loadProgress() {
     if (!progressBar || !progressText) return;
-    fetch("http://localhost:5000/get-progress")
+    fetch(`${baseURL}/get-progress`)
       .then(response => response.json())
       .then(data => {
         if (data.status === "success") {
@@ -95,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ---- LOAD DONORS ----
   function loadDonors() {
     if (!donorsList) return;
-    fetch("http://localhost:5000/get-donors")
+    fetch(`${baseURL}/get-donors`)
       .then(response => response.json())
       .then(data => {
         if (data.status === "success") {
@@ -126,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ---- PAYSTACK ----
   function payWithPaystack(email, amount) {
     let handler = PaystackPop.setup({
-      key: 'pk_live_21f95e6aa3c7c285a0e9db68656bb9294bb81f51', // replace with your Paystack public key
+      key: 'pk_live_21f95e6aa3c7c285a0e9db68656bb9294bb81f51', 
       email: email,
       amount: amount,
       currency: "NGN",
@@ -141,73 +142,72 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ---- SHOW THANK YOU MODAL ----
-function showThankYouModal(message) {
-  if (!thankYouModal || !thankYouMessage) return;
+  function showThankYouModal(message) {
+    if (!thankYouModal || !thankYouMessage) return;
 
-  thankYouMessage.textContent = message;
-  thankYouModal.classList.add("show");
-  thankYouModal.classList.remove("hide");
+    thankYouMessage.textContent = message;
+    thankYouModal.classList.add("show");
+    thankYouModal.classList.remove("hide");
 
-  // Auto close with fade-out
-  setTimeout(() => {
-    thankYouModal.classList.add("hide");
     setTimeout(() => {
-      thankYouModal.classList.remove("show");
-    }, 500); // match CSS transition (0.5s)
-  }, 5000);
-}
-
-// ---- VERIFY PAYMENT ----
-function verifyPayment(reference, amount, donorEmail) {
-  fetch("http://localhost:5000/verify-payment", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ reference, amount })
-  })
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === "success") {
-        const [name, domain] = donorEmail.split("@");
-        const maskedName = name.length > 2 ? name.slice(0, 2) + "***" : name[0] + "***";
-        const maskedEmail = `${maskedName}@${domain}`;
-
-        showThankYouModal(
-          `Thank you ${maskedEmail} for donating ₦${(amount / 100).toFixed(2)} 💖`
-        );
-
-        loadProgress();
-        loadDonors();
-      } else {
-        showUserModal("Payment verification failed. Please contact support.", true);
-      }
-    })
-    .catch(() => showUserModal("Error verifying payment", true));
-}
-
-// ---- MANUAL CLOSE ----
-if (closeModal) {
-  closeModal.addEventListener("click", () => {
-    thankYouModal.classList.add("hide");
-    setTimeout(() => {
-      thankYouModal.classList.remove("show");
-    }, 500);
-  });
-}
-window.addEventListener("click", (e) => {
-  if (e.target === thankYouModal) {
-    thankYouModal.classList.add("hide");
-    setTimeout(() => {
-      thankYouModal.classList.remove("show");
-    }, 500);
+      thankYouModal.classList.add("hide");
+      setTimeout(() => {
+        thankYouModal.classList.remove("show");
+      }, 500);
+    }, 5000);
   }
-});
+
+  // ---- VERIFY PAYMENT ----
+  function verifyPayment(reference, amount, donorEmail) {
+    fetch(`${baseURL}/verify-payment`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ reference, amount })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === "success") {
+          const [name, domain] = donorEmail.split("@");
+          const maskedName = name.length > 2 ? name.slice(0, 2) + "***" : name[0] + "***";
+          const maskedEmail = `${maskedName}@${domain}`;
+
+          showThankYouModal(
+            `Thank you ${maskedEmail} for donating ₦${(amount / 100).toFixed(2)} 💖`
+          );
+
+          loadProgress();
+          loadDonors();
+        } else {
+          showUserModal("Payment verification failed. Please contact support.", true);
+        }
+      })
+      .catch(() => showUserModal("Error verifying payment", true));
+  }
+
+  // ---- MANUAL CLOSE ----
+  if (closeModal) {
+    closeModal.addEventListener("click", () => {
+      thankYouModal.classList.add("hide");
+      setTimeout(() => {
+        thankYouModal.classList.remove("show");
+      }, 500);
+    });
+  }
+  window.addEventListener("click", (e) => {
+    if (e.target === thankYouModal) {
+      thankYouModal.classList.add("hide");
+      setTimeout(() => {
+        thankYouModal.classList.remove("show");
+      }, 500);
+    }
+  });
 
   // ---- FORM HANDLER ----
   if (donateForm) {
     donateForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const email = emailInput.value.trim();
-      const amount = parseFloat(amountInput.value) * 100; // convert to kobo
+      const amount = parseFloat(amountInput.value) * 100;
 
       if (!email || amount <= 0) {
         showUserModal("Please enter a valid email and donation amount", true);
@@ -226,7 +226,6 @@ window.addEventListener("click", (e) => {
     loadDonors();
   }, 10000);
 });
-
 
 // ====================
 // CONTACT FORM
@@ -274,13 +273,13 @@ function handleNetlifyForm(formId, successMsg) {
   });
 }
 
-// Attach handlers
 handleNetlifyForm("volunteerForm", "Thank you, your volunteer application has been received!");
 handleNetlifyForm("contactForm", "Thank you, your message has been sent!");
 handleNetlifyForm("registerForm", "Thank you for registering, we will be in touch!");
 
-
-
+// ====================
+// HERO BUTTONS
+// ====================
 const heroButtons = document.querySelectorAll('.hero-btn');
 heroButtons.forEach(btn => {
   btn.addEventListener('click', e => {
@@ -300,7 +299,7 @@ heroButtons.forEach(btn => {
   });
 });
 
-
+// ====================
 // NAVIGATION + MOBILE MENU
 // ====================
 const navLinks = document.querySelectorAll('.nav-links a');
@@ -311,7 +310,6 @@ navLinks.forEach(link => {
     link.classList.add('active');
   }
 });
-
 
 // ====================
 // CONFETTI EFFECT
@@ -328,21 +326,17 @@ if (confetti) {
   }
 }
 
-// Combined: Dark mode + Mobile hamburger (replace previous related code with this)
+// ====================
+// DARK MODE + HAMBURGER
+// ====================
 (function () {
-  // Elements
   const btn = document.getElementById('toggle');
   const body = document.body;
   const hamburger = document.getElementById('hamburger');
   const navLinksMenu = document.getElementById('navLinks');
   const navCta = document.querySelector('.nav-cta');
 
-  /* -------------------------
-     Dark mode init + toggle
-     uses localStorage key "theme"
-  --------------------------*/
   (function initDarkMode() {
-    // ensure button exists and has the styling class
     if (btn && !btn.classList.contains('dark-toggle')) btn.classList.add('dark-toggle');
 
     const stored = localStorage.getItem('theme');
@@ -350,11 +344,9 @@ if (confetti) {
     else if (stored === 'light') body.classList.remove('dark-mode');
     else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       body.classList.add('dark-mode');
-      // optional: persist detected preference
       localStorage.setItem('theme', 'dark');
     }
 
-    // set button UI
     if (btn) {
       btn.textContent = body.classList.contains('dark-mode') ? '☀' : '🌙';
       btn.setAttribute('aria-pressed', String(body.classList.contains('dark-mode')));
@@ -367,27 +359,20 @@ if (confetti) {
     }
   })();
 
-  /* -------------------------
-     Hamburger / drawer behavior
-  --------------------------*/
   if (hamburger) {
-    // helper to toggle open state
     function setOpenState(open) {
       hamburger.classList.toggle('open', open);
       document.body.classList.toggle('nav-open', open);
       hamburger.setAttribute('aria-expanded', String(!!open));
-
       if (navLinksMenu) navLinksMenu.classList.toggle('show', open);
       if (navCta) navCta.classList.toggle('show', open);
     }
 
-    // click toggles
     hamburger.addEventListener('click', (e) => {
       e.stopPropagation();
       setOpenState(!hamburger.classList.contains('open'));
     });
 
-    // keyboard support
     hamburger.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -395,45 +380,27 @@ if (confetti) {
       }
     });
 
-    // close when a nav link is clicked
     if (navLinksMenu) {
       navLinksMenu.addEventListener('click', (e) => {
         const el = e.target;
-        if (el && el.tagName === 'A') {
-          setOpenState(false);
-        }
+        if (el && el.tagName === 'A') setOpenState(false);
       });
     }
 
-    // click outside to close (covers overlay click too)
     document.addEventListener('click', (e) => {
       const clickedInHamburger = !!e.target.closest('#hamburger');
       const clickedInNav = !!e.target.closest('#navLinks') || !!e.target.closest('.nav-cta');
-
-      if (!clickedInHamburger && !clickedInNav && document.body.classList.contains('nav-open')) {
-        setOpenState(false);
-      }
+      if (!clickedInHamburger && !clickedInNav && document.body.classList.contains('nav-open')) setOpenState(false);
     });
 
-    // keep Escape key to close
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && document.body.classList.contains('nav-open')) {
-        setOpenState(false);
-      }
+      if (e.key === 'Escape' && document.body.classList.contains('nav-open')) setOpenState(false);
     });
   }
 
-  /* -------------------------
-     Defensive fixes / debug output
-     Useful if menu still misbehaves
-  --------------------------*/
-  // If hamburger is missing, log once
   if (!hamburger) console.warn('Hamburger not found: element #hamburger missing.');
   if (!navLinksMenu) console.warn('Nav links container not found: element #navLinks missing.');
-
 })();
-
-
 
 // ====================
 // TIMELINE REVEAL
@@ -469,34 +436,23 @@ if (readMoreBtn && moreText) {
 
 // ====================
 // DYNAMIC IMAGE CHANGER
+// ====================
 const images = ["nwanyi01.jpg", "foundation5.jpg", "edited30.jpg", "edited09.jpg"];
 const imageElement = document.getElementById("dynamicImage");
-
 let currentIndex = 0;
 
 function changeImage() {
   if (!imageElement) return;
-
-  // Fade out
   imageElement.style.opacity = 0;
-
-  // After fade-out ends, change src and fade in
   imageElement.addEventListener("transitionend", function handler() {
-    // pick next image (sequential loop)
     currentIndex = (currentIndex + 1) % images.length;
     imageElement.src = images[currentIndex];
-
-    // fade in
     imageElement.style.opacity = 1;
-
-    // remove this one-time event handler
     imageElement.removeEventListener("transitionend", handler);
   });
 }
 
-// Change image every 5 seconds
 if (imageElement) setInterval(changeImage, 5000);
-
 
 // ====================
 // MODAL FUNCTIONALITY
@@ -518,13 +474,8 @@ if (modal && closeBtn && registerBtns.length) {
     });
   });
 
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
-
-  window.addEventListener("click", e => {
-    if (e.target === modal) modal.style.display = "none";
-  });
+  closeBtn.addEventListener("click", () => { modal.style.display = "none"; });
+  window.addEventListener("click", e => { if (e.target === modal) modal.style.display = "none"; });
 
   const eventForm = document.getElementById("eventForm");
   if (eventForm) {
@@ -534,5 +485,4 @@ if (modal && closeBtn && registerBtns.length) {
       modal.style.display = "none";
     });
   }
-} 
-
+}

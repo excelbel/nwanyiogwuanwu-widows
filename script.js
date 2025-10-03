@@ -312,41 +312,6 @@ navLinks.forEach(link => {
   }
 });
 
-const hamburger = document.getElementById('hamburger');
-const navLinksMenu = document.getElementById('navLinks');
-const navCta = document.querySelector('.nav-cta');
-
-if (hamburger && navLinksMenu && navCta) {
-  hamburger.addEventListener('click', () => {
-    navLinksMenu.classList.toggle('show');
-    navCta.classList.toggle('show');
-    hamburger.classList.toggle('active');
-  });
-
-  navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      navLinksMenu.classList.remove('show');
-      navCta.classList.remove('show');
-      hamburger.classList.remove('active');
-    });
-  });
-}
-
-
-// ====================
-// DROPDOWN TOGGLE (MOBILE)
-// ====================
-const dropdowns = document.querySelectorAll('.dropdown');
-if (dropdowns.length) {
-  dropdowns.forEach(drop => {
-    drop.addEventListener('click', (e) => {
-      if (window.innerWidth <= 768) {
-        e.preventDefault();
-        drop.classList.toggle('show');
-      }
-    });
-  });
-}
 
 // ====================
 // CONFETTI EFFECT
@@ -363,37 +328,110 @@ if (confetti) {
   }
 }
 
-// ====================
-// DARK MODE
-// ====================
-(function() {
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme === "dark") {
-    document.body.classList.add("dark-mode");
-  }
-})();
-
-document.addEventListener("DOMContentLoaded", () => {
-  const toggleBtn = document.getElementById("toggle");
+// Combined: Dark mode + Mobile hamburger (replace previous related code with this)
+(function () {
+  // Elements
+  const btn = document.getElementById('toggle');
   const body = document.body;
+  const hamburger = document.getElementById('hamburger');
+  const navLinksMenu = document.getElementById('navLinks');
+  const navCta = document.querySelector('.nav-cta');
 
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme) {
-    body.classList.toggle("dark-mode", savedTheme === "dark");
-  } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-    body.classList.add("dark-mode");
-    localStorage.setItem("theme", "dark");
-  }
+  /* -------------------------
+     Dark mode init + toggle
+     uses localStorage key "theme"
+  --------------------------*/
+  (function initDarkMode() {
+    // ensure button exists and has the styling class
+    if (btn && !btn.classList.contains('dark-toggle')) btn.classList.add('dark-toggle');
 
-  if (toggleBtn) {
-    toggleBtn.textContent = body.classList.contains("dark-mode") ? "☀" : "🌙";
-    toggleBtn.addEventListener("click", () => {
-      body.classList.toggle("dark-mode");
-      localStorage.setItem("theme", body.classList.contains("dark-mode") ? "dark" : "light");
-      toggleBtn.textContent = body.classList.contains("dark-mode") ? "☀" : "🌙";
+    const stored = localStorage.getItem('theme');
+    if (stored === 'dark') body.classList.add('dark-mode');
+    else if (stored === 'light') body.classList.remove('dark-mode');
+    else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      body.classList.add('dark-mode');
+      // optional: persist detected preference
+      localStorage.setItem('theme', 'dark');
+    }
+
+    // set button UI
+    if (btn) {
+      btn.textContent = body.classList.contains('dark-mode') ? '☀' : '🌙';
+      btn.setAttribute('aria-pressed', String(body.classList.contains('dark-mode')));
+      btn.addEventListener('click', () => {
+        const nowDark = body.classList.toggle('dark-mode');
+        localStorage.setItem('theme', nowDark ? 'dark' : 'light');
+        btn.textContent = nowDark ? '☀' : '🌙';
+        btn.setAttribute('aria-pressed', String(nowDark));
+      });
+    }
+  })();
+
+  /* -------------------------
+     Hamburger / drawer behavior
+  --------------------------*/
+  if (hamburger) {
+    // helper to toggle open state
+    function setOpenState(open) {
+      hamburger.classList.toggle('open', open);
+      document.body.classList.toggle('nav-open', open);
+      hamburger.setAttribute('aria-expanded', String(!!open));
+
+      if (navLinksMenu) navLinksMenu.classList.toggle('show', open);
+      if (navCta) navCta.classList.toggle('show', open);
+    }
+
+    // click toggles
+    hamburger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setOpenState(!hamburger.classList.contains('open'));
+    });
+
+    // keyboard support
+    hamburger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        setOpenState(!hamburger.classList.contains('open'));
+      }
+    });
+
+    // close when a nav link is clicked
+    if (navLinksMenu) {
+      navLinksMenu.addEventListener('click', (e) => {
+        const el = e.target;
+        if (el && el.tagName === 'A') {
+          setOpenState(false);
+        }
+      });
+    }
+
+    // click outside to close (covers overlay click too)
+    document.addEventListener('click', (e) => {
+      const clickedInHamburger = !!e.target.closest('#hamburger');
+      const clickedInNav = !!e.target.closest('#navLinks') || !!e.target.closest('.nav-cta');
+
+      if (!clickedInHamburger && !clickedInNav && document.body.classList.contains('nav-open')) {
+        setOpenState(false);
+      }
+    });
+
+    // keep Escape key to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.body.classList.contains('nav-open')) {
+        setOpenState(false);
+      }
     });
   }
-});
+
+  /* -------------------------
+     Defensive fixes / debug output
+     Useful if menu still misbehaves
+  --------------------------*/
+  // If hamburger is missing, log once
+  if (!hamburger) console.warn('Hamburger not found: element #hamburger missing.');
+  if (!navLinksMenu) console.warn('Nav links container not found: element #navLinks missing.');
+
+})();
 
 
 
@@ -431,26 +469,34 @@ if (readMoreBtn && moreText) {
 
 // ====================
 // DYNAMIC IMAGE CHANGER
-// ====================
 const images = ["nwanyi01.jpg", "foundation5.jpg", "edited30.jpg", "edited09.jpg"];
 const imageElement = document.getElementById("dynamicImage");
 
+let currentIndex = 0;
+
 function changeImage() {
   if (!imageElement) return;
+
+  // Fade out
   imageElement.style.opacity = 0;
 
-  setTimeout(() => {
-    let randomIndex;
-    let currentImage = imageElement.src ? imageElement.src.split("/").pop() : "";
-    do {
-      randomIndex = Math.floor(Math.random() * images.length);
-    } while (images[randomIndex] === currentImage);
+  // After fade-out ends, change src and fade in
+  imageElement.addEventListener("transitionend", function handler() {
+    // pick next image (sequential loop)
+    currentIndex = (currentIndex + 1) % images.length;
+    imageElement.src = images[currentIndex];
 
-    imageElement.src = images[randomIndex];
+    // fade in
     imageElement.style.opacity = 1;
-  }, 1000);
+
+    // remove this one-time event handler
+    imageElement.removeEventListener("transitionend", handler);
+  });
 }
+
+// Change image every 5 seconds
 if (imageElement) setInterval(changeImage, 5000);
+
 
 // ====================
 // MODAL FUNCTIONALITY

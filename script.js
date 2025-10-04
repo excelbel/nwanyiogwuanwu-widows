@@ -250,58 +250,32 @@ if (contactForm) {
 
 // ====================
 // NETLIFY FORMS (Volunteer, Contact, Register)
-// =============================================
-
+// ====================
 function handleNetlifyForm(formId, successMsg) {
   const form = document.getElementById(formId);
   if (!form) return;
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-
-    // Create FormData from the form
     const formData = new FormData(form);
 
-    // Ensure the form-name field is present (Netlify requires it)
-    const formName = form.getAttribute("name") || form.id;
-    formData.set("form-name", formName);
-
-    // Optional: log fields for debugging
-    for (const pair of formData.entries()) {
-      console.log(`${pair[0]}: ${pair[1]}`);
-    }
-
-    // Submit the form data to Netlify
     fetch("/", {
       method: "POST",
       body: formData
-      // No need to set headers, the browser will handle multipart/form-data automatically
     })
-      .then((resp) => {
-        console.log("Netlify response:", resp.status);
-        showUserModal(successMsg); // Use your existing modal
+      .then(() => {
+        showUserModal(successMsg);
         form.reset();
       })
-      .catch((err) => {
-        console.error("Submission error:", err);
+      .catch(() => {
         showUserModal("Something went wrong. Please try again later.", true);
       });
   });
 }
 
-// Initialize all Netlify forms
-handleNetlifyForm(
-  "volunteerForm",
-  "Thank you, your volunteer application has been received!"
-);
-handleNetlifyForm(
-  "contactForm",
-  "Thank you, your message has been sent!"
-);
-handleNetlifyForm(
-  "registerForm",
-  "Thank you for registering, we will be in touch!"
-);
+handleNetlifyForm("volunteerForm", "Thank you, your volunteer application has been received!");
+handleNetlifyForm("contactForm", "Thank you, your message has been sent!");
+handleNetlifyForm("registerForm", "Thank you for registering, we will be in touch!");
 
 // ====================
 // HERO BUTTONS

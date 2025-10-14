@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Post - Grace Ground Initiative</title>
+  <meta name="description" content="Grace Ground Initiative post page" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; }
+    .back { display: inline-block; margin-bottom: 18px; text-decoration: none; color: inherit; }
+    .meta { color: #666; font-size: 0.95rem; margin-bottom: 12px; }
+    .excerpt { margin-bottom: 16px; font-style: italic; color: #444; }
+    .featured-img { max-width: 100%; height: auto; border-radius: 6px; margin-bottom: 16px; }
+    .error { color: #b00020; background: #fff6f6; padding: 12px; border-radius: 6px; }
+    .loading { color:#444; padding:12px 0; }
+  </style>
+</head>
+<body>
+  <a class="back" href="blog.html" rel="noopener">← Back to blog</a>
+
+  <main id="post-area" aria-live="polite">
+    <h1 id="post-title">Loading…</h1>
+    <div class="meta" id="post-meta" aria-hidden="false"></div>
+    <p class="excerpt" id="post-excerpt"></p>
+    <img id="post-image" class="featured-img" alt="" style="display:none" />
+    <article id="post-content" aria-live="polite"></article>
+    <div id="post-error" style="margin-top:12px"></div>
+  </main>
+
+  <script>
+    // Polyfill for CSS.escape if not present
+    function cssEscape(value) {
+      if (window.CSS && typeof window.CSS.escape === 'function') return window.CSS.escape(value);
+      // basic fallback that covers common cases, not full spec
+      return String(value).replace(/([^\w-])/g, (m) => '\\' + m);
+    }
+
+    // Utilities
+    function getQueryParam(name) {
+      return new URLSearchParams(location.search).get(name);
+    }
+
+    function slugify(text) {
+      return String(text || '')
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9\-]/g, '')
+        .replace(/\-+/g, '-')
+        .replace(/^\-+|\-+$/g, '');
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // Choose the field that looks like full content
+    function chooseFullContent(post) {
+      if (!post) return { key: null, value: '' , trusted: false};
+      const priority = ['content','fullContent','body','html','longContent','article','post','description'];
+      for (const k of priority) {
+        if (post[k] && String(post[k]).trim().length) return { key: k, value: String(post[k]).trim(), trusted: !!post.trustedHtml };
+      }
+      for (const k of Object.keys(post)) {
+        if (!/^(slug|title|author|date|excerpt|tags|image|trustedHtml)$/i.test(k) && typeof post[k] === 'string' && post[k].trim().length > 40) {
+          return { key: k, value: String(post[k]).trim(), trusted: !!post.trustedHtml };
+        }
+      }
+      if (post.excerpt && String(post.excerpt).trim().length) return { key: 'excerpt', value: String(post.excerpt).trim(), trusted: !!post.trustedHtml };
+      return { key: null, value: '', trusted: false };
+    }
+
+    // Try to read inline content from the opener window, if available and same origin
+    function tryGetInlineFromOpener(slug) {
+      try {
+        if (!window.opener || window.opener.closed) return null;
+        const doc = window.opener.document;
+        if (!doc) return null;
+
+        // prefer data-slug matches, then data-title contains match
+        const selTemplates = [
+          `.blog-card[data-slug="${cssEscape(slug)}"] .readmore-content`,
+          `.blog-card[data-slug="${cssEscape(slug)}"] .post-content`,
+          `.blog-card[data-slug="${cssEscape(slug)}"] .blog-content`,
+          `.blog-card[data-title="${cssEscape(slug)}"] .readmore-content`,
+          `.blog-card[data-title="${cssEscape(slug)}"] .blog-content`,
+          // fallback: search any .blog-card whose data-title or text contains the slug
+        ];
+
+        for (const sel of selTemplates) {
+          const el = doc.querySelector(sel);
+          if (el && el.innerHTML && el.innerHTML.trim().length > 40) {
+            return { html: el.innerHTML.trim(), trusted: true };
+          }
+        }
+
+        // last resort, scan blog-cards and match slug in dataset or title text
+        const cards = Array.from(doc.querySelectorAll('.blog-card'));
+        for (const card of cards) {
+          const dsSlug = (card.dataset && card.dataset.slug) ? slugify(card.dataset.slug) : '';
+          const dsTitle = (card.dataset && card.dataset.title) ? slugify(card.dataset.title) : '';
+          if (dsSlug === slug || dsTitle === slug) {
+            const el = card.querySelector('.readmore-content') || card.querySelector('.post-content') || card.querySelector('.blog-content');
+            if (el && el.innerHTML && el.innerHTML.trim().length > 40) {
+              return { html: el.innerHTML.trim(), trusted: true };
+            }
+          }
+        }
+      } catch (e) {
+        // Accessing opener can throw cross origin, ignore silently
+        console.debug('Cannot access opener', e);
+      }
+      return null;
+    }
+
+    function renderContent(post, slug, inlineFallback) {
+      const titleEl = document.getElementById('post-title');
+      const metaEl = document.getElementById('post-meta');
+      const excerptEl = document.getElementById('post-excerpt');
+      const contentEl = document.getElementById('post-content');
+      const imageEl = document.getElementById('post-image');
+
+      titleEl.textContent = post.title || 'Untitled';
+      // build meta parts defensively
+      const parts = [];
+      if (post.author) parts.push('By ' + post.author);
+      if (post.date) parts.push(post.date);
+      if (Array.isArray(post.tags) && post.tags.length) parts.push(post.tags.join(', '));
+      metaEl.textContent = parts.join(', ');
+
+      excerptEl.textContent = post.excerpt || '';
+
+      if (post.image) {
+        imageEl.src = post.image;
+        imageEl.alt = post.title || '';
+        imageEl.style.display = '';
+      } else {
+        imageEl.style.display = 'none';
+        imageEl.removeAttribute('src');
+        imageEl.removeAttribute('alt');
+      }
+
+      if (inlineFallback && inlineFallback.html) {
+        // inline content came from opener and is marked trusted
+        contentEl.innerHTML = inlineFallback.html;
+        if (post.title) document.title = post.title + ' - Grace Ground Initiative';
+        return;
+      }
+
+      const chosen = chooseFullContent(post);
+      if (!chosen.value) {
+        contentEl.textContent = 'No content available for this post.';
+        if (post.title) document.title = post.title + ' - Grace Ground Initiative';
+        return;
+      }
+
+      if (chosen.trusted) {
+        contentEl.innerHTML = chosen.value;
+      } else {
+        // escape and preserve paragraph breaks
+        const safe = escapeHtml(chosen.value);
+        contentEl.innerHTML = '<p>' + safe.replace(/\r\n/g, '\n').replace(/\n{2,}/g,'</p><p>').replace(/\n/g,'<br>') + '</p>';
+      }
+
+      if (post.title) document.title = post.title + ' - Grace Ground Initiative';
+    }
+
+    (async function() {
+      const rawSlug = getQueryParam('slug') || getQueryParam('id');
+      const slugParam = rawSlug ? String(rawSlug) : '';
+      const titleEl = document.getElementById('post-title');
+      const errorEl = document.getElementById('post-error');
+      const contentEl = document.getElementById('post-content');
+
+      if (!slugParam) {
+        titleEl.textContent = 'No post specified';
+        errorEl.innerHTML = '<p class="error">No slug provided. Use post.html?slug=your-post-slug</p>';
+        return;
+      }
+
+      contentEl.innerHTML = '<div class="loading">Loading post…</div>';
+      const POSTS_JSON = 'posts.json';
+
+      try {
+        const res = await fetch(POSTS_JSON, { cache: 'no-cache' });
+        if (!res.ok) throw new Error('Failed to fetch posts.json, status ' + res.status);
+        const data = await res.json();
+
+        // Normalize into a slug map
+        const map = Object.create(null);
+        const items = Array.isArray(data) ? data : Object.keys(data).map(k => data[k]);
+        items.forEach(item => {
+          if (!item) return;
+          const computedSlug = slugify(item.slug || item.title || '');
+          if (computedSlug) map[computedSlug] = item;
+          // also index by the raw slug key if present
+          if (item.slug) map[String(item.slug)] = item;
+        });
+
+        const requested = slugify(slugParam);
+        let post = map[slugParam] || map[requested] || null;
+        if (!post) {
+          const foundKey = Object.keys(map).find(k => slugify(k) === requested);
+          if (foundKey) post = map[foundKey];
+        }
+
+        // attempt to read inline content from opener for fallback
+        const inlineFallback = tryGetInlineFromOpener(requested);
+
+        if (!post && !inlineFallback) {
+          titleEl.textContent = 'Post not found';
+          errorEl.innerHTML = `<p class="error">Post not found for "${escapeHtml(slugParam)}".</p>`;
+          return;
+        }
+
+        if (!post && inlineFallback) {
+          // create a minimal object to render the inline content
+          const minimal = { title: slugParam.replace(/-/g,' '), author: 'Grace Ground Initiative', date: '', excerpt: '', image: '' };
+          renderContent(minimal, slugParam, inlineFallback);
+          return;
+        }
+
+        renderContent(post, slugParam, inlineFallback);
+
+      } catch (err) {
+        console.error('Error loading posts.json', err);
+        titleEl.textContent = 'Error loading post';
+        errorEl.innerHTML = '<p class="error">An error occurred while loading the post.</p>';
+        const fallback = { title: slugParam, author: 'Grace Ground Initiative', date: '', excerpt: '', image: 'https://picsum.photos/800/450?random=99' };
+        renderContent(fallback, slugParam, null);
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -249,33 +249,105 @@ if (contactForm) {
 }
 
 // ====================
-// NETLIFY FORMS (Volunteer, Contact, Register)
-// ====================
-function handleNetlifyForm(formId, successMsg) {
-  const form = document.getElementById(formId);
-  if (!form) return;
+// Universal Netlify form handler with custom success messages
+(function () {
+  const DEBUG = false;
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const formData = new FormData(form);
+  // Success messages for each form
+  const successMessages = {
+    register: "Thank you for registering, we will be in touch!",
+    contact: "Thank you, your message has been sent!",
+    volunteer: "Thank you, your volunteer application has been received!"
+  };
 
-    fetch("/", {
-      method: "POST",
-      body: formData
-    })
-      .then(() => {
-        showUserModal(successMsg);
-        form.reset();
-      })
-      .catch(() => {
-        showUserModal("Something went wrong. Please try again later.", true);
+  const selector = 'form[data-netlify="true"], form[netlify]';
+  const forms = Array.from(document.querySelectorAll(selector));
+
+  if (forms.length === 0) {
+    if (DEBUG) console.debug("No Netlify forms found with selector", selector);
+    return;
+  }
+
+  forms.forEach((form) => {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (form.__submitting) return;
+      form.__submitting = true;
+
+      const submitButtons = Array.from(form.querySelectorAll('[type="submit"]'));
+      submitButtons.forEach((btn) => {
+        btn.disabled = true;
+        btn.setAttribute("aria-busy", "true");
       });
-  });
-}
 
-handleNetlifyForm("volunteerForm", "Thank you, your volunteer application has been received!");
-handleNetlifyForm("contactForm", "Thank you, your message has been sent!");
-handleNetlifyForm("registerForm", "Thank you for registering, we will be in touch!");
+      try {
+        const formData = new FormData(form);
+
+        // Ensure form-name exists for Netlify
+        if (!formData.has("form-name")) {
+          const formName = form.getAttribute("name") || form.id || "netlify-form";
+          formData.append("form-name", formName);
+        }
+
+        // Convert to URL-encoded data
+        const params = new URLSearchParams();
+        for (const [key, value] of formData.entries()) {
+          params.append(key, value);
+        }
+        const body = params.toString();
+
+        if (DEBUG) {
+          console.debug("Submitting Netlify form", {
+            action: "/",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            bodyPreview: body.slice(0, 200)
+          });
+        }
+
+        const res = await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body
+        });
+
+        if (!res.ok) throw new Error(`Network response not ok, status ${res.status}`);
+
+        // Pick success message based on form name or id
+        const formName = form.getAttribute("name") || form.id || "";
+        const successMsg =
+          successMessages[formName.toLowerCase()] ||
+          form.getAttribute("data-netlify-success") ||
+          "Form submitted successfully!";
+
+        if (typeof showUserModal === "function") {
+          showUserModal(successMsg);
+        } else {
+          alert(successMsg);
+        }
+
+        form.reset();
+      } catch (err) {
+        console.error("Netlify form submit error", err);
+        const errMsg =
+          form.getAttribute("data-netlify-error") ||
+          "Something went wrong. Please try again later.";
+        if (typeof showUserModal === "function") {
+          showUserModal(errMsg, true);
+        } else {
+          alert(errMsg);
+        }
+      } finally {
+        submitButtons.forEach((btn) => {
+          btn.disabled = false;
+          btn.removeAttribute("aria-busy");
+        });
+        form.__submitting = false;
+      }
+    });
+  });
+})();
+
 
 // ====================
 // HERO BUTTONS
@@ -417,22 +489,27 @@ window.addEventListener("scroll", revealOnScroll);
 revealOnScroll();
 
 // ====================
-// FOUNDER READ MORE
-// ====================
-const readMoreBtn = document.getElementById("readMoreBtn");
-const moreText = document.getElementById("moreText");
 
-if (readMoreBtn && moreText) {
-  readMoreBtn.addEventListener("click", () => {
-    if (moreText.style.display === "block") {
-      moreText.style.display = "none";
-      readMoreBtn.textContent = "Read More";
-    } else {
-      moreText.style.display = "block";
-      readMoreBtn.textContent = "Read Less";
-    }
-  });
-}
+// ====================
+// script.js
+// Save this file as script.js next to the HTML file
+
+// Mobile nav toggle
+
+
+
+  
+
+
+
+  
+
+
+  
+
+  
+
+
 
 // ====================
 // DYNAMIC IMAGE CHANGER

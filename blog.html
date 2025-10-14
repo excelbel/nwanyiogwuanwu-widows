@@ -1,104 +1,268 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Grace Ground Initiative is a non-profit organization supporting widows through empowerment, education, and sustainable growth programs.">
-
   <title>Blog - Grace Ground Initiative – Empowering Widows and Communities</title>
   <meta name="keywords" content="widows foundation, empowerment, Grace Ground Initiative, community support, non-profit, education">
-</head>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    /* Base */
+:root{
+  --bg:#ffffff;
+  --muted:#6b7280;
+  --accent:#0f766e;
+  --card-bg:#ffffff;
+  --soft-shadow: 0 6px 20px rgba(15,23,42,0.06);
+  --soft-shadow-strong: 0 10px 30px rgba(15,23,42,0.09);
+  --radius:12px;
+  --gap:22px;
+  --glass: rgba(255,255,255,0.6);
+}
+
+html,body { height:100%; margin:0; background:#f7fafb; font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color:#0f172a; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+
+.container { max-width:1100px; margin:0 auto; padding:28px 20px; }
+
+/* Featured */
+.featured-post {
+  background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6));
+  border-radius: var(--radius);
+  padding:18px;
+  box-shadow: var(--soft-shadow);
+  display:flex;
+  gap:20px;
+  align-items:center;
+  margin-bottom:26px;
+  min-height:220px;
+  overflow:hidden;
+}
+.featured-image { width:420px; max-width:40%; border-radius:10px; height:auto; object-fit:cover; box-shadow: var(--soft-shadow-strong); flex-shrink:0; }
+.featured-content { flex:1; min-width:220px; }
+.featured-content h3 { margin:0 0 8px; font-weight:700; font-size:1.4rem; letter-spacing:-0.01em; color:#07282a; }
+.featured-content p { margin:0 0 14px; color:var(--muted); font-size:0.98rem; }
+.tag { display:inline-block; background:rgba(15,118,110,0.08); color:var(--accent); padding:6px 10px; border-radius:8px; font-weight:600; font-size:0.85rem; margin-right:10px; }
+
+/* Grid */
+.posts-grid {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:var(--gap);
+  align-items:start;
+}
+@media (max-width:980px) { .posts-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width:640px) { .posts-grid { grid-template-columns: 1fr; } }
+
+/* Card */
+.blog-card {
+  background:var(--card-bg);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow: var(--soft-shadow);
+  transition: transform 260ms cubic-bezier(.2,.9,.3,1), box-shadow 260ms;
+  display:flex;
+  flex-direction:column;
+  min-height:320px;
+  position:relative;
+  isolation:isolate;
+}
+.blog-card:hover { transform: translateY(-8px); box-shadow: var(--soft-shadow-strong); }
+
+/* Image */
+.blog-card .featured-img {
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  display:block;
+  border-bottom-left-radius:0;
+  border-bottom-right-radius:0;
+}
+
+/* Content */
+.blog-card .blog-content { padding:16px 18px 20px; display:flex; flex-direction:column; gap:12px; flex:1; }
+.blog-card .meta { color:var(--muted); font-size:0.85rem; }
+.blog-card h4 { margin:0; font-size:1.05rem; line-height:1.3; color:#052927; font-weight:600; }
+.blog-card .excerpt { margin:0; color:#334155; font-size:0.95rem; flex:1; }
+
+/* Card actions */
+.card-actions { display:flex; gap:10px; align-items:center; margin-top:6px; }
+.btn, .btn-outline {
+  display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:8px 12px; border-radius:10px;
+  border:0; cursor:pointer; text-decoration:none; font-weight:600; font-size:0.95rem;
+}
+.btn { background:var(--accent); color:white; box-shadow: 0 6px 20px rgba(15,118,110,0.12); }
+.btn-outline { background:transparent; color:var(--accent); border:1px solid rgba(15,118,110,0.12); }
+
+/* Read more toggle */
+.read-toggle, .read-more { background:transparent; color:var(--accent); border:0; font-weight:600; cursor:pointer; text-decoration:none; }
+.readmore-content { display:none; padding:0 18px 18px; color:#334155; font-size:0.95rem; line-height:1.5; }
+
+/* tag select */
+.tag-filter { display:flex; align-items:center; gap:8px; }
+#tagSelect {
+  padding:8px 10px;
+  border-radius:10px;
+  border:1px solid rgba(15,23,42,0.06);
+  font-family: inherit;
+  font-size:0.95rem;
+  background: #fff;
+  cursor: pointer;
+}
+#tagSelect:focus { outline:3px solid rgba(15,118,110,0.12); outline-offset:3px; border-radius:8px; }
+.sr-only { position: absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+/* Load more */
+#loadMore { display:block; padding:12px 18px; margin:28px auto; border-radius:12px; background:#fff; border:1px solid rgba(15,23,42,0.06); cursor:pointer; box-shadow:var(--soft-shadow); }
+
+/* Modal style (simple, matches the card look) */
+.ggi-modal-backdrop {
+  position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(7,10,14,0.45); z-index:1200; padding:20px;
+}
+.ggi-modal {
+  background: linear-gradient(180deg,#fff,#fbfeff); width:100%; max-width:900px; border-radius:14px; box-shadow:0 30px 80px rgba(2,6,23,0.6); overflow:auto;
+}
+.ggi-modal .close-btn { position:absolute; right:12px; top:12px; background:transparent; border:0; font-size:18px; cursor:pointer; padding:10px; }
+.ggi-inner { padding:28px; color:#06131a; }
+
+/* load button extras, keeps label visible and adds rotating chevron */
+.ggi-load-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; white-space:nowrap; }
+.ggi-load-btn #loadMoreLabel { display:inline-block; min-width:72px; text-align:center; font-weight:600; color:var(--accent); }
+.ggi-load-btn .chev { display:inline-flex; align-items:center; justify-content:center; transition: transform 260ms cubic-bezier(.2,.9,.3,1); margin-left:6px; line-height:0; }
+.ggi-load-btn svg { display:block; width:14px; height:14px; }
+
+/* rotate chevron when button is expanded */
+.ggi-load-btn[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+/* ensure the count text doesn't wrap or push chevron off */
+#loadMoreCount { font-weight:500; opacity:0.9; font-size:0.95rem; }
+
+/* optional subtle hover affordance */
+.ggi-load-btn:hover { transform: translateY(-2px); transition: transform 160ms ease; }
+
+/* Accessibility focus */
+a:focus, button:focus { outline:3px solid rgba(15,118,110,0.12); outline-offset:3px; border-radius:8px; }
+
+/* Small utility */
+.center { text-align:center; }
+
+    /* Featured rotator crossfade styles */
+#featuredPost { position: relative; overflow: hidden; min-height: 180px; }
+.featured-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  padding: 12px 0;
+  transition: opacity 600ms ease, transform 600ms ease;
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  box-sizing: border-box;
+}
+.featured-slide.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.featured-slide img { width: 420px; max-width: 40%; border-radius: 6px; object-fit: cover; }
+.featured-slide .featured-content { max-width: 58%; }
+.featured-rotator-controls { margin-top: 12px; display:flex; gap:8px; align-items:center; }
+.featured-prev, .featured-next { cursor: pointer; }
+
+    img { max-width: 100%; display: block; object-fit: cover; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+    .controls { display:flex; justify-content:space-between; gap:12px; align-items:center; margin:18px 0; flex-wrap:wrap; }
+    .search { display:flex; align-items:center; gap:8px; }
+    .posts-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; }
+  </style>
 </head>
 <body>
 
 <header class="site-header">
-  <nav class="navbar">
-    <!-- Logo -->
-    <h1 class="logo">Grace and Ground</h1>
+  <nav class="navbar container" aria-label="Main navigation">
+    <h1 class="logo">Grace Ground Initiative</h1>
 
-    <!-- Hamburger (mobile) -->
+   <!-- Hamburger (mobile) -->
     <div id="hamburger" class="hamburger" aria-label="Open menu" aria-expanded="false" role="button" tabindex="0">
   <span></span>
   <span></span>
   <span></span>
 </div>
 
-    <!-- Navigation links -->
-    <ul class="nav-links" id="navLinks">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="services.html">Services</a></li>
-      <li><a href="events.html">Events</a></li>
-      <li><a href="blog.html">Blog</a></li>
-      <li><a href="donate.html">Donate</a></li>
-      <li><a href="register.html">Register</a></li>
-      <li><a href="contact.html">Contact</a></li>
-       <li><a href="Volunteer.html">Volunteer</a></li>
+    <ul class="nav-links" id="navLinks" role="menubar">
+      <li role="none"><a role="menuitem" href="index.html">Home</a></li>
+      <li role="none"><a role="menuitem" href="about.html">About</a></li>
+      <li role="none"><a role="menuitem" href="services.html">Services</a></li>
+      <li role="none"><a role="menuitem" href="events.html">Events</a></li>
+      <li role="none"><a role="menuitem" href="blog.html" aria-current="page">Blog</a></li>
+      <li role="none"><a role="menuitem" href="donate.html">Donate</a></li>
+      <li role="none"><a role="menuitem" href="register.html">Register</a></li>
+      <li role="none"><a role="menuitem" href="contact.html">Contact</a></li>
+      <li role="none"><a role="menuitem" href="volunteer.html">Volunteer</a></li>
     </ul>
 
-    <!-- CTA placeholder (optional for extra buttons) -->
-    <div class="nav-cta"></div>
+    <div class="nav-cta"><a href="donate.html" class="btn btn-primary">Donate</a></div>
   </nav>
 </header>
-<main>
-  <!-- Blog Hero -->
-  <section class="blog-hero section container">
-    <h2>Our Stories</h2>
+
+<main class="container" id="main">
+  <!-- Hero -->
+  <section class="blog-hero" aria-labelledby="hero-title">
+    <h2 id="hero-title">Our Stories</h2>
     <p>Read inspiring stories, updates, and insights from our community, volunteers, and partners.</p>
   </section>
 
-  <!-- Featured Post -->
-  <section class="featured-post container">
-    <article>
-      <img src="https://picsum.photos/900/400?random=1" alt="Featured Story">
-      <div class="featured-content">
-        <h3>Empowering Widows Through Education</h3>
-        <p>Discover how your support is transforming lives through education and skills training programs.</p>
-        <a href="#" class="btn btn-outline">Read More</a>
+  <!-- Featured (now dynamic) -->
+  <section id="featuredPost" class="featured-post" aria-labelledby="featured-title">
+    <img id="featuredImage" src="https://picsum.photos/1000/600?random=21" alt="Featured image" class="featured-image" onerror="this.src='https://picsum.photos/1000/600?random=999'">
+    <div class="featured-content">
+      <h3 id="featured-title">Featured story</h3>
+      <p id="featured-excerpt">Highlighting an impactful story from our work.</p>
+      <div class="featured-actions" style="margin-top:12px;">
+        <span id="featured-tag" class="tag" style="display:none">Impact</span>
+        <a id="featured-link" class="btn btn-outline" href="post.html">Read full story</a>
       </div>
-    </article>
+    </div>
   </section>
 
-  <!-- Blog Grid -->
-  <section class="blog-grid container">
-    <article class="blog-card">
-      <img src="https://picsum.photos/400/250?random=2" alt="">
-      <div class="blog-content">
-        <h4>How Small Donations Create Big Impact</h4>
-        <p>Stories of widows whose lives were changed through your kindness and generosity.</p>
-        <a href="#" class="read-more">Read More →</a>
-      </div>
-    </article>
+  <div class="controls" role="toolbar" aria-label="Blog controls">
+    <div class="search" role="search">
+      <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+      <input id="searchInput" type="search" placeholder="Search posts by title, excerpt, or tag" aria-label="Search posts">
+    </div>
 
-    <article class="blog-card">
-      <img src="https://picsum.photos/400/250?random=3" alt="">
-      <div class="blog-content">
-        <h4>Spotlight: Aisha’s Volunteer Journey</h4>
-        <p>Meet Aisha, who empowers children through evening classes in her community.</p>
-        <a href="#" class="read-more">Read More →</a>
-      </div>
-    </article>
+    <div class="tag-filter" aria-label="Filter by tag">
+      <label for="tagSelect" class="sr-only">Filter posts by tag</label>
+      <select id="tagSelect" aria-label="Filter posts by tag">
+        <option value="">All tags</option>
+      </select>
+    </div>
+  </div>
 
-    <article class="blog-card">
-      <img src="https://picsum.photos/400/250?random=4" alt="">
-      <div class="blog-content">
-        <h4>Our Annual Gala Success</h4>
-        <p>A look back at our fundraising gala and how the funds are changing lives.</p>
-        <a href="#" class="read-more">Read More →</a>
-      </div>
-    </article>
-
-    <article class="blog-card">
-      <img src="https://picsum.photos/400/250?random=5" alt="">
-      <div class="blog-content">
-        <h4>Volunteer Stories: Making a Difference</h4>
-        <p>Volunteers share their experiences of giving back and the joy it brings.</p>
-        <a href="#" class="read-more">Read More →</a>
-      </div>
-    </article>
+  <!-- Posts grid - blog-loader.js will populate cards here -->
+  <section id="postsGrid" class="blog-grid" aria-live="polite">
+    <div class="posts-grid" aria-hidden="false"></div>
   </section>
+
+  <!-- Load button -->
+  <div class="center" style="margin-top:18px;">
+    <button id="loadMore" class="btn ggi-load-btn" type="button" aria-controls="postsGrid" aria-expanded="false">
+      <span id="loadMoreLabel">Load more</span>
+      <span id="loadMoreCount" aria-hidden="true" style="margin-left:8px;"></span>
+      <span class="chev" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false" role="img" aria-hidden="true">
+          <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </button>
+  </div>
+
 </main>
 
 <footer class="footer">
@@ -109,46 +273,386 @@
     </div>
     <div class="footer-links">
       <h4>Quick Links</h4>
-      <ul>
-        <li><a href="about.html">About</a></li>
-        <li><a href="services.html">Services</a></li>
-        <li><a href="events.html">Events</a></li>
-        <li><a href="volunteer.html">Volunteer</a></li>
-        <li><a href="donate.html">Donate</a></li>
-      </ul>
-    </div>
-    <div class="footer-socials">
-      <h4>Connect</h4>
-      <div class="social-icons">
-      <!-- Facebook -->
-<a href="https://www.facebook.com/gracegroundinitiative" target="_blank" rel="noopener noreferrer">
-  <i class="fa-brands fa-facebook"></i></i>
-</a><br>
-
-<!-- X / Twitter -->
-<a href="https://x.com/nwanyiogwuanwu" target="_blank" rel="noopener noreferrer">
- <i class="fa-brands fa-square-twitter"></i>
-</a><br>
-
-<!-- Instagram -->
-<a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
-  <i class="fa-brands fa-instagram"></i>
-</a><br>
-
-<!-- LinkedIn -->
-<a href="https://www.linkedin.com/in/nwanyiogwuanwuwidowsfoundation" target="_blank" rel="noopener noreferrer">
-  <i class="fa-brands fa-linkedin"></i>
-</a><br>
 
 
-      </div>
+    <ul>
+      <li><a href="about.html">About</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="volunteer.html">Volunteer</a></li>
+      <li><a href="donate.html">Donate</a></li>
+    </ul>
+  </div>
+
+  <div class="footer-socials">
+    <h4>Connect</h4>
+    <div class="social-icons" aria-hidden="false">
+      <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a><br>
+      <a href="#" aria-label="X"><i class="fa-brands fa-square-twitter"></i></a><br>
+      <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a><br>
+      <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
     </div>
   </div>
-  <div class="footer-bottom">
-    <p>&copy; 2025 Grace Ground Initiative – Empowering Widows and Communities. All Rights Reserved.</p>
-  </div>
+
+  
 </footer>
 
+<!-- Scripts -->
+<script src="blog-loader.js"></script>
 <script src="script.js"></script>
+
+<!-- Featured rotator and tag dropdown wiring -->
+<script>
+(function() {
+  const FEATURED_URL = 'posts.json';
+  const featuredSection = document.getElementById('featuredPost');
+  const featuredImage = document.getElementById('featuredImage');
+  const featuredTitle = document.getElementById('featured-title');
+  const featuredExcerpt = document.getElementById('featured-excerpt');
+  const featuredLink = document.getElementById('featured-link');
+  const featuredTag = document.getElementById('featured-tag');
+
+  function parseDate(d) {
+    if (!d) return null;
+    const t = Date.parse(d);
+    return isNaN(t) ? null : t;
+  }
+
+  function applyFeatured(post) {
+    if (!post) return;
+    const img = post.image || 'https://picsum.photos/1000/600?random=999';
+    featuredImage.src = img;
+    featuredImage.alt = post.title || 'Featured story';
+    featuredTitle.textContent = post.title || 'Featured story';
+    featuredExcerpt.textContent = post.excerpt || '';
+    featuredLink.href = 'post.html?slug=' + encodeURIComponent(post.slug || (post.id || ''));
+    featuredLink.setAttribute('aria-label', 'Read full story: ' + (post.title || 'Featured'));
+    if (Array.isArray(post.tags) && post.tags.length) {
+      featuredTag.textContent = post.tags[0];
+      featuredTag.style.display = '';
+    } else {
+      featuredTag.style.display = 'none';
+    }
+  }
+
+  async function pickLatest() {
+    try {
+      const res = await fetch(FEATURED_URL, { cache: 'no-cache' });
+      if (!res.ok) throw new Error('Fetch failed ' + res.status);
+      const data = await res.json();
+      const posts = Array.isArray(data) ? data : Object.keys(data).map(k => data[k]);
+      if (!posts || posts.length === 0) return;
+
+      // Normalize and find latest by date field
+      let best = null;
+      for (const p of posts) {
+        p.slug = p.slug || (p.title ? p.title.toLowerCase().replace(/\s+/g,'-').replace(/[^\w-]/g,'') : '');
+        const pd = parseDate(p.date);
+        if (!best) { best = { post: p, time: pd }; continue; }
+        const bt = best.time;
+        if (pd !== null && (bt === null || pd > bt)) best = { post: p, time: pd };
+      }
+
+      applyFeatured(best ? best.post : posts[0]);
+    } catch (err) {
+      console.warn('Could not load featured post', err);
+      try {
+        const res = await fetch(FEATURED_URL);
+        if (res.ok) {
+          const data = await res.json();
+          const posts = Array.isArray(data) ? data : Object.keys(data).map(k => data[k]);
+          if (posts && posts.length) applyFeatured(posts[0]);
+        }
+      } catch (e) { /* nothing else to do */ }
+    }
+  }
+
+  // rotator IIFE
+  (function() {
+    if (!featuredSection) return;
+    const ROTATE_MS = 8000;
+    const MAX_SLIDES = 3;
+    const CROSSFADE_MS = 700;
+
+    function safeSlug(p) {
+      if (!p) return '';
+      return p.slug || (p.title ? String(p.title).toLowerCase().replace(/\s+/g,'-').replace(/[^\w-]/g,'') : '');
+    }
+    function escapeHtml(s) {
+      return String(s || '')
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
+    function buildSlide(post) {
+      const slide = document.createElement('div');
+      slide.className = 'featured-slide';
+      slide.setAttribute('role', 'group');
+      slide.setAttribute('aria-label', post.title || 'Featured story');
+      slide.innerHTML = `
+        <img src="${escapeHtml(post.image || 'https://picsum.photos/1000/600?random=999')}" alt="${escapeHtml(post.title || '')}" onerror="this.src='https://picsum.photos/1000/600?random=999'">
+        <div class="featured-content">
+          <h3 class="featured-title">${escapeHtml(post.title || 'Featured story')}</h3>
+          <p class="featured-excerpt">${escapeHtml(post.excerpt || '')}</p>
+          <div class="featured-actions" style="margin-top:12px;">
+            ${ Array.isArray(post.tags) && post.tags.length ? `<span class="tag">${escapeHtml(post.tags[0])}</span>` : '' }
+            <a class="btn btn-outline" href="post.html?slug=${encodeURIComponent(safeSlug(post))}">Read full story</a>
+          </div>
+        </div>
+      `;
+      return slide;
+    }
+
+    async function fetchTopPosts() {
+      try {
+        const res = await fetch(FEATURED_URL, { cache: 'no-cache' });
+        if (!res.ok) throw new Error('Fetch failed ' + res.status);
+        const data = await res.json();
+        const posts = Array.isArray(data) ? data : Object.keys(data).map(k => data[k]);
+        posts.forEach(p => {
+          p.slug = p.slug || (p.title ? String(p.title).toLowerCase().replace(/\s+/g,'-').replace(/[^\w-]/g,'') : '');
+          p.tags = Array.isArray(p.tags) ? p.tags : (p.tags ? String(p.tags).split(/\s*,\s*|[\s]+/) : []);
+        });
+        const sorted = posts.slice().sort((a,b) => {
+          const da = parseDate(a.date), db = parseDate(b.date);
+          if (da === null && db === null) return 0;
+          if (da === null) return 1;
+          if (db === null) return -1;
+          return db - da;
+        });
+        return sorted.slice(0, MAX_SLIDES);
+      } catch (err) {
+        console.warn('Could not load featured posts', err);
+        return [];
+      }
+    }
+
+    function prepareContainers() {
+      let slidesContainer = featuredSection.querySelector('.featured-slides');
+      if (!slidesContainer) {
+        while (featuredSection.firstChild) featuredSection.removeChild(featuredSection.firstChild);
+        slidesContainer = document.createElement('div');
+        slidesContainer.className = 'featured-slides';
+        slidesContainer.style.position = 'relative';
+        slidesContainer.style.minHeight = '180px';
+        slidesContainer.style.width = '100%';
+        featuredSection.appendChild(slidesContainer);
+      }
+      return slidesContainer;
+    }
+
+    function ensureControls() {
+      let controls = featuredSection.querySelector('.featured-rotator-controls');
+      if (controls) return controls;
+      controls = document.createElement('div');
+      controls.className = 'featured-rotator-controls';
+      controls.style.marginTop = '12px';
+      controls.style.display = 'flex';
+      controls.style.gap = '8px';
+      controls.style.alignItems = 'center';
+      const prev = document.createElement('button');
+      prev.type = 'button';
+      prev.className = 'featured-prev btn';
+      prev.setAttribute('aria-label', 'Previous featured');
+      prev.textContent = '‹ Prev';
+      const next = document.createElement('button');
+      next.type = 'button';
+      next.className = 'featured-next btn';
+      next.setAttribute('aria-label', 'Next featured');
+      next.textContent = 'Next ›';
+      controls.appendChild(prev);
+      controls.appendChild(next);
+      featuredSection.appendChild(controls);
+      return controls;
+    }
+
+    let slides = [];
+    let idx = 0;
+    let timer = null;
+    let isPaused = false;
+    let slidesContainer = null;
+
+    function crossfadeTo(post) {
+      if (!post || !slidesContainer) return;
+      const newSlide = buildSlide(post);
+      newSlide.style.position = 'absolute';
+      newSlide.style.inset = '0';
+      newSlide.style.display = 'flex';
+      newSlide.style.alignItems = 'center';
+      newSlide.style.gap = '18px';
+      newSlide.style.padding = '12px 0';
+      newSlide.style.opacity = '0';
+      newSlide.style.transform = 'translateY(6px)';
+      newSlide.style.transition = `opacity ${CROSSFADE_MS}ms ease, transform ${CROSSFADE_MS}ms ease`;
+      newSlide.style.pointerEvents = 'auto';
+      slidesContainer.appendChild(newSlide);
+      newSlide.offsetHeight;
+      newSlide.style.opacity = '1';
+      newSlide.style.transform = 'translateY(0)';
+      const others = Array.from(slidesContainer.children).filter(s => s !== newSlide);
+      others.forEach(s => {
+        s.style.opacity = '0';
+        s.style.transform = 'translateY(6px)';
+        setTimeout(() => {
+          if (s.parentNode === slidesContainer) slidesContainer.removeChild(s);
+        }, CROSSFADE_MS + 50);
+      });
+    }
+
+    function showIndex(i) {
+      if (!slides || slides.length === 0) return;
+      idx = (i % slides.length + slides.length) % slides.length;
+      crossfadeTo(slides[idx]);
+    }
+
+    function startTimer() {
+      stopTimer();
+      timer = setInterval(() => {
+        if (!isPaused) showIndex(idx + 1);
+      }, ROTATE_MS);
+    }
+    function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
+
+    function addPauseListeners(container) {
+      container.addEventListener('mouseenter', () => { isPaused = true; });
+      container.addEventListener('mouseleave', () => { isPaused = false; });
+      container.addEventListener('focusin', () => { isPaused = true; });
+      container.addEventListener('focusout', () => { isPaused = false; });
+    }
+
+    function wireControls() {
+      const controls = ensureControls();
+      const prev = controls.querySelector('.featured-prev');
+      const next = controls.querySelector('.featured-next');
+      if (!prev || !next) return;
+      prev.addEventListener('click', () => { showIndex(idx - 1); });
+      next.addEventListener('click', () => { showIndex(idx + 1); });
+    }
+
+    async function initRotator() {
+      slidesContainer = prepareContainers();
+      const top = await fetchTopPosts();
+      if (!top || top.length === 0) return;
+      slides = top;
+      showIndex(0);
+      wireControls();
+      addPauseListeners(featuredSection);
+      startTimer();
+      window.addEventListener('beforeunload', stopTimer);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initRotator);
+    } else {
+      initRotator();
+    }
+  })();
+
+  // Tag dropdown wiring
+  (function() {
+    const TAG_SELECT_ID = 'tagSelect';
+    const POSTS_URL = 'posts.json';
+
+    function tagToParam(tag) {
+      return String(tag || '').trim().toLowerCase().replace(/\s+/g,'-').replace(/[^\w-]/g,'');
+    }
+
+    async function populateTagDropdown() {
+      const sel = document.getElementById(TAG_SELECT_ID);
+      if (!sel) return;
+      try {
+        const res = await fetch(POSTS_URL, { cache: 'no-cache' });
+        if (!res.ok) throw new Error('Fetch failed ' + res.status);
+        const data = await res.json();
+        const posts = Array.isArray(data) ? data : Object.keys(data).map(k => data[k]);
+        const tagSet = new Set();
+        posts.forEach(p => {
+          if (!p) return;
+          const tags = Array.isArray(p.tags) ? p.tags : (p.tags ? String(p.tags).split(/\s*,\s*|[\s]+/) : []);
+          tags.forEach(t => {
+            const trimmed = String(t || '').trim();
+            if (trimmed) tagSet.add(trimmed);
+          });
+        });
+        const tags = Array.from(tagSet).sort((a,b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+        for (const t of tags) {
+          const opt = document.createElement('option');
+          opt.value = tagToParam(t);
+          opt.textContent = t;
+          sel.appendChild(opt);
+        }
+        const urlParams = new URLSearchParams(window.location.search);
+        const current = urlParams.get('tag');
+        if (current) sel.value = current;
+      } catch (err) {
+        console.warn('Could not populate tags dropdown', err);
+      }
+    }
+
+    function goToBlogWithTag(tagParam) {
+      const base = 'blog.html';
+      if (!tagParam) {
+        window.location.href = base;
+      } else {
+        window.location.href = base + '?tag=' + encodeURIComponent(tagParam);
+      }
+    }
+
+    document.addEventListener('change', (e) => {
+      const tgt = e.target;
+      if (tgt && tgt.id === TAG_SELECT_ID) {
+        goToBlogWithTag(tgt.value);
+      }
+    });
+
+    document.body.addEventListener('click', (e) => {
+      const tagEl = e.target.closest && e.target.closest('.tag');
+      if (!tagEl) return;
+      const raw = tagEl.getAttribute('data-tag') || tagEl.textContent || '';
+      const param = tagToParam(raw);
+      if (!param) return;
+      e.preventDefault();
+      goToBlogWithTag(param);
+    });
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', populateTagDropdown);
+    } else {
+      populateTagDropdown();
+    }
+  })();
+
+  // End of main IIFE
+})();
+</script>
+
+<script>
+  // run after DOMContentLoaded: image error preflight reporting
+  document.addEventListener('DOMContentLoaded', () => {
+    const missing = new Set();
+
+    document.querySelectorAll('img').forEach(img => {
+      img.addEventListener('error', () => {
+        missing.add(img.src);
+        img.src = 'https://picsum.photos/800/450?random=999';
+      }, { once: true });
+    });
+
+    setTimeout(() => {
+      if (missing.size) {
+        console.warn('Missing image files detected:', Array.from(missing));
+      }
+    }, 2000);
+
+    // global fallback for any images that error afterwards
+    document.body.addEventListener('error', e => {
+      const tgt = e.target;
+      if (tgt && tgt.tagName === 'IMG') {
+        tgt.src = 'https://picsum.photos/800/450?random=999';
+      }
+    }, true);
+  });
+</script>
+
 </body>
 </html>
